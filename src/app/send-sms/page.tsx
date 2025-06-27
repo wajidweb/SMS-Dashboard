@@ -16,6 +16,8 @@ interface FormData {
   senderId: string;
   messageType: string;
   scheduleEnabled: boolean;
+  scheduleDate: string;
+  scheduleTime: string;
 }
 
 const SendSMSPage: React.FC = () => {
@@ -29,6 +31,8 @@ const SendSMSPage: React.FC = () => {
     senderId: "",
     messageType: "Transactional",
     scheduleEnabled: false,
+    scheduleDate: "",
+    scheduleTime: "",
   });
 
   const [contactGroups, setContactGroups] = useState<ContactGroup[]>([
@@ -529,9 +533,7 @@ const SendSMSPage: React.FC = () => {
                   )}
                 </div>
               </div>
-
-              {/* Schedule Message */}
-              <div className="flex items-center justify-between">
+            <div className="flex items-center justify-between">
                 <div>
                   <h3 className="text-sm font-medium text-gray-900">
                     Schedule Message
@@ -560,6 +562,128 @@ const SendSMSPage: React.FC = () => {
                   />
                 </button>
               </div>
+
+              {/* Conditional Date and Time Inputs */}
+              {formData.scheduleEnabled && (
+                <div className="mt-6 space-y-4 animate-in slide-in-from-top-2 duration-200">
+                  {/* Date Input */}
+                  <div>
+                    <label
+                      htmlFor="date"
+                      className="block text-sm font-medium text-gray-700 mb-2"
+                    >
+                      Date
+                    </label>
+                    <div className="relative">
+                      <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                        <svg
+                          className="h-5 w-5 text-black"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
+                          />
+                        </svg>
+                      </div>
+                      <input
+                        type="date"
+                        id="date"
+                        value={formData.scheduleDate}
+                        onChange={(e) =>
+                          setFormData((prev) => ({
+                            ...prev,
+                            scheduleDate: e.target.value,
+                          }))
+                        }
+                        className="w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent [&::-webkit-datetime-edit]:opacity-0 [&::-webkit-datetime-edit-fields-wrapper]:opacity-0 [&::-webkit-datetime-edit-text]:opacity-0 [&::-webkit-datetime-edit-month-field]:opacity-0 [&::-webkit-datetime-edit-day-field]:opacity-0 [&::-webkit-datetime-edit-year-field]:opacity-0 [&::-webkit-inner-spin-button]:opacity-0 [&::-webkit-calendar-picker-indicator]:opacity-0"
+                        style={{
+                          colorScheme: "light",
+                        }}
+                        onFocus={(e) => e.target.showPicker?.()}
+                      />
+                      {!formData.scheduleDate && (
+                        <div className="absolute inset-y-0 left-10 flex items-center pointer-events-none">
+                          <span className="text-black text-sm">
+                            Pick a date
+                          </span>
+                        </div>
+                      )}
+                      {formData.scheduleDate && (
+                        <div className="absolute inset-y-0 left-10 flex items-center pointer-events-none">
+                          <span className="text-black text-sm">
+                            {new Date(formData.scheduleDate).toLocaleDateString()}
+                          </span>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+
+                  {/* Time Input */}
+                  <div>
+                    <label
+                      htmlFor="time"
+                      className="block text-sm font-medium text-gray-700 mb-2"
+                    >
+                      Time
+                    </label>
+                    <div className="relative">
+                      <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                        <svg
+                          className="h-5 w-5 text-black"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
+                          />
+                        </svg>
+                      </div>
+                      <input
+                        type="time"
+                        id="time"
+                        value={formData.scheduleTime}
+                        onChange={(e) =>
+                          setFormData((prev) => ({
+                            ...prev,
+                            scheduleTime: e.target.value,
+                          }))
+                        }
+                        className="w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent [&::-webkit-datetime-edit]:opacity-0 [&::-webkit-datetime-edit-fields-wrapper]:opacity-0 [&::-webkit-datetime-edit-text]:opacity-0 [&::-webkit-datetime-edit-hour-field]:opacity-0 [&::-webkit-datetime-edit-minute-field]:opacity-0 [&::-webkit-datetime-edit-ampm-field]:opacity-0 [&::-webkit-inner-spin-button]:opacity-0 [&::-webkit-calendar-picker-indicator]:opacity-0"
+                        onFocus={(e) => e.target.showPicker?.()}
+                      />
+                      {!formData.scheduleTime && (
+                        <div className="absolute inset-y-0 left-10 flex items-center pointer-events-none">
+                          <span className="text-black text-sm">
+                            --:-- --
+                          </span>
+                        </div>
+                      )}
+                      {formData.scheduleTime && (
+                        <div className="absolute inset-y-0 left-10 flex items-center pointer-events-none">
+                          <span className="text-black text-sm">
+                            {(() => {
+                              const [hours, minutes] = formData.scheduleTime.split(':');
+                              const hour = parseInt(hours);
+                              const ampm = hour >= 12 ? 'PM' : 'AM';
+                              const displayHour = hour === 0 ? 12 : hour > 12 ? hour - 12 : hour;
+                              return `${displayHour}:${minutes} ${ampm}`;
+                            })()}
+                          </span>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              )}
             </div>
 
             {/* Send Summary */}
