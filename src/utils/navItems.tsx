@@ -1,7 +1,10 @@
+import { CircleDollarSign } from 'lucide-react';
+
 type NavItem = {
   name: string;
   icon: React.ReactNode;
   path: string;
+  subItems?: { name: string; path: string }[]; 
 };
 
 export const navItems: NavItem[] = [
@@ -37,7 +40,14 @@ export const navItems: NavItem[] = [
       </svg>
     ),
     name: "Send SMS",
-    path: "/sendsms",
+    path: "/send-sms",
+  },
+  {
+    icon: (
+      <CircleDollarSign className='h-4 w-4 ' />
+    ),
+    name: "Payments",
+    path: "/payments",
   },
   {
     icon: (
@@ -75,6 +85,11 @@ export const navItems: NavItem[] = [
     ),
     name: "SMS Tools",
     path: "/sms-tools",
+     subItems: [
+    { name: "Phone Filtering", path: "/sms-tools/phone-filtering" },
+    { name: "Content Filtering", path: "/sms-tools/content-filtering" },
+    { name: "OTP Detection", path: "/sms-tools/otp-detection" },
+  ],
   },
   {
     icon: (

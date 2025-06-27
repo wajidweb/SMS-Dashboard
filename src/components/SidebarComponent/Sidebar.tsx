@@ -1,14 +1,19 @@
 "use client";
-import React, { useCallback } from "react";
+import React, { useCallback, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useSidebar } from "@/contexts/SidebarContext";
 import { navItems } from "@/utils/navItems";
-
+import Image from "next/image";
+import { ChevronRight } from "lucide-react";
 
 const Sidebar: React.FC = () => {
-  const { isExpanded, isMobileOpen, isHovered, setIsHovered } = useSidebar();
+  const { isExpanded, isMobileOpen, isHovered, setIsHovered , setIsMobileOpen  } = useSidebar();
   const pathname = usePathname();
+  const [openMenu, setOpenMenu] = useState<string | null>(null);
+  const toggleMenu = (name: string) => {
+    setOpenMenu((prev) => (prev === name ? null : name));
+  };
 
   // Check if a path is active
   const isActive = useCallback((path: string) => path === pathname, [pathname]);
@@ -16,51 +21,111 @@ const Sidebar: React.FC = () => {
   const renderMenuItems = () => (
     <ul className="flex flex-col gap-2">
       {navItems.map((nav) => (
-        <li key={nav.name}>
-          <Link
-            href={nav.path}
-            className={`group flex items-center w-full p-2 rounded-md transition-colors duration-200 text-sm bg-white
-            hover:bg-blue-50 dark:hover:bg-gray-800 
-            ${
-              isActive(nav.path)
-                ? "bg-blue-100 dark:bg-gray-700 "
-                : "text-gray-700 dark:text-gray-300"
-            }`}
-          >
-            <span className="flex-shrink-0">{nav.icon}</span>
-            {(isExpanded || isHovered || isMobileOpen) && (
-              <span className="ml-3">{nav.name}</span>
+        <React.Fragment key={nav.name}>
+          <li>
+            {nav.subItems ? (
+              <button
+                type="button"
+                onClick={() => toggleMenu(nav.name)}
+                className={`group flex items-center justify-between w-full p-2 rounded-md transition-colors duration-200 text-sm bg-white
+  hover:bg-blue-50 dark:hover:bg-gray-800 
+  ${
+    isActive(nav.path)
+      ? "bg-blue-100 dark:bg-gray-700"
+      : "text-gray-700 dark:text-gray-300"
+  }`}
+              >
+                <div className="flex items-center">
+                  <span className="flex-shrink-0">{nav.icon}</span>
+                  {(isExpanded || isHovered || isMobileOpen) && (
+                    <span className="ml-3">{nav.name}</span>
+                  )}
+                </div>
+
+                {(isExpanded || isHovered || isMobileOpen) && (
+                  <ChevronRight
+                    className={`ml-2 h-4 w-4 transition-transform duration-200 ${
+                      openMenu === nav.name ? "rotate-90" : ""
+                    }`}
+                  />
+                )}
+              </button>
+            ) : (
+              <Link
+                href={nav.path}
+                onClick={() => {
+    if (window.innerWidth < 1024) {
+      setIsMobileOpen(false);
+    }
+  }}
+
+                className={`group flex items-center w-full p-2 rounded-md transition-colors duration-200 text-sm bg-white
+              hover:bg-blue-50 dark:hover:bg-gray-800 
+              ${
+                isActive(nav.path)
+                  ? "bg-blue-100 dark:bg-gray-700 "
+                  : "text-gray-700 dark:text-gray-300"
+              }`}
+              >
+                <span className="flex-shrink-0">{nav.icon}</span>
+                {(isExpanded || isHovered || isMobileOpen) && (
+                  <span className="ml-3">{nav.name}</span>
+                )}
+              </Link>
             )}
-          </Link>
-        </li>
+          </li>
+
+          {/* Render subItems if menu is open */}
+          {nav.subItems && openMenu === nav.name && (
+            <ul className="ml-6 mt-1 flex flex-col gap-1">
+              {nav.subItems.map((sub) => (
+                <li key={sub.name}>
+                  <Link
+                    href={sub.path}
+                    className={`block px-3 py-1 rounded-md text-sm transition-colors 
+                    ${
+                      isActive(sub.path)
+                        ? "bg-blue-100 dark:bg-gray-700 text-blue-600"
+                        : "text-gray-600 hover:bg-blue-50 dark:hover:bg-gray-800"
+                    }`}
+                  >
+                    {sub.name}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          )}
+        </React.Fragment>
       ))}
     </ul>
   );
 
-  // Don't render sidebar on desktop when collapsed (isExpanded = false)
-  // On mobile, show/hide based on isMobileOpen
   const shouldShowSidebar = () => {
-    if (typeof window !== 'undefined' && window.innerWidth < 1024) {
-      return isMobileOpen; // Mobile: show only when mobile menu is open
+    if (typeof window !== "undefined" && window.innerWidth < 1024) {
+      return isMobileOpen;
     }
-    return isExpanded || isHovered; // Desktop: show when expanded or hovered
+    return isExpanded || isHovered;
   };
 
   return (
     <aside
-      className={`fixed mt-16 flex flex-col lg:mt-0 top-0 px-5 left-0 bg-white dark:bg-gray-900 dark:border-gray-800 text-gray-900 h-screen transition-all duration-300 ease-in-out z-50 border-r border-gray-200 
+      className={`fixed mt-16 flex flex-col  lg:mt-0 top-0 px-5 left-0 bg-white dark:bg-gray-900 dark:border-gray-800 text-gray-900 h-screen transition-all duration-300 ease-in-out z-50 border-r border-gray-200 
         ${
           shouldShowSidebar()
             ? "w-[290px] translate-x-0"
             : "w-[290px] -translate-x-full lg:w-0 lg:translate-x-0"
         }`}
       onMouseEnter={() => {
-        if (typeof window !== 'undefined' && window.innerWidth >= 1024 && !isExpanded) {
+        if (
+          typeof window !== "undefined" &&
+          window.innerWidth >= 1024 &&
+          !isExpanded
+        ) {
           setIsHovered(true);
         }
       }}
       onMouseLeave={() => {
-        if (typeof window !== 'undefined' && window.innerWidth >= 1024) {
+        if (typeof window !== "undefined" && window.innerWidth >= 1024) {
           setIsHovered(false);
         }
       }}
@@ -96,7 +161,7 @@ const Sidebar: React.FC = () => {
             </Link>
           </div>
 
-          <div className="flex flex-col overflow-y-auto duration-300 ease-linear">
+          <div className="flex flex-col overflow-y-auto custom-scrollbar duration-300 ease-linear ">
             <nav className="mb-6">
               <div className="flex flex-col gap-4">
                 <div>
@@ -107,6 +172,31 @@ const Sidebar: React.FC = () => {
                 </div>
               </div>
             </nav>
+          </div>
+
+          {/* User Info at Bottom */}
+          <div className="mt-auto pb-6 border-t pt-2">
+            <button className="flex items-center text-gray-700 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg px-4 py-1 w-full">
+              <span className="mr-3 overflow-hidden rounded-full h-11 w-11">
+                <Image
+                  width={44}
+                  height={44}
+                  src="/images/user/wajid.png"
+                  alt="User"
+                />
+              </span>
+
+              {(isExpanded || isHovered || isMobileOpen) && (
+                <div className="flex flex-col justify-start items-start">
+                  <span className="block font-bold text-sm text-gray-900 dark:text-white">
+                    Wajid Ali
+                  </span>
+                  <span className="block text-sm text-gray-600 dark:text-gray-400">
+                    admin
+                  </span>
+                </div>
+              )}
+            </button>
           </div>
         </>
       )}
