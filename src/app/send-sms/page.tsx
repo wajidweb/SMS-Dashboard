@@ -106,8 +106,8 @@ const SendSMSPage: React.FC = () => {
   const totalSMS = totalRecipients * smsCount;
 
   return (
-    <div className="min-h-screen bg-gray-50 p-2 lg:p-3">
-      <div className="mx-auto max-w-7xl">
+    <div className="min-h-screen bg-gray-50 p-2 lg:p-3 w-full">
+      <div className="w-full">
         {/* Header */}
         <div className="mb-8">
           <h1 className="text-3xl font-bold text-gray-900 mb-2">Send SMS</h1>
