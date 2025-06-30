@@ -294,15 +294,20 @@
 }
 
 @layer utilities {
-  /* For Remove Date Icon */
-  input[type="date"]::-webkit-inner-spin-button,
-  input[type="time"]::-webkit-inner-spin-button,
-  input[type="date"]::-webkit-calendar-picker-indicator,
-  input[type="time"]::-webkit-calendar-picker-indicator {
+  /* Remove spinner for time input only */
+  input[type="time"]::-webkit-inner-spin-button {
     display: none;
     -webkit-appearance: none;
   }
+
+  /* ✅ Allow calendar picker to work */
+  input[type="date"]::-webkit-calendar-picker-indicator {
+    display: inline;
+    opacity: 1;
+    cursor: pointer;
+  }
 }
+
 
 /* third-party libraries CSS */
 .apexcharts-legend-text {
