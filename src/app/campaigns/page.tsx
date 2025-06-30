@@ -313,8 +313,8 @@ export default function CampaignsDashboard() {
   const stats = getStats(campaignData.all);
 
   return (
-    <div className="min-h-screen bg-gray-50 p-2 sm:p-4 lg:p-4 w-full">
-      <div className="w-full">
+    <div className="min-h-screen bg-gray-50 p-2 lg:p-4">
+      <div className="w-full max-w-none mx-auto">
         {/* Header */}
         <div className="flex flex-col space-y-4 sm:flex-row sm:items-center sm:justify-between sm:space-y-0 mb-6 sm:mb-8">
           <div className="flex-1">

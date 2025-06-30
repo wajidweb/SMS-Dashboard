@@ -21,6 +21,9 @@ interface FormData {
 }
 
 const SendSMSPage: React.FC = () => {
+  const [manualPhoneNumbers, setManualPhoneNumbers] = useState("");
+  const [manualRecipientsCount, setManualRecipientsCount] = useState(0);
+
   const [activeTab, setActiveTab] = useState<"manual" | "csv" | "groups">(
     "manual"
   );
@@ -240,7 +243,7 @@ const SendSMSPage: React.FC = () => {
               </div>
 
               {/* Recipient Selection Tabs */}
-              <div className="mb-6 border">
+              <div className="mb-6">
                 <div className="flex flex-col sm:flex-row justify-between items-center bg-[#f6f9fc] rounded-xl p-1 w-full">
                   <button
                     onClick={() => setActiveTab("manual")}
@@ -306,6 +309,19 @@ const SendSMSPage: React.FC = () => {
                       placeholder="Enter phone numbers (one per line or comma-separated) +1234567890 +0987654321"
                       className="w-full border border-gray-300 rounded-lg px-4 py-3 text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 resize-none"
                       rows={6}
+                      value={manualPhoneNumbers}
+                      onChange={(e) => {
+                        const value = e.target.value;
+                        setManualPhoneNumbers(value);
+
+                        // Count logic: split by comma, newline, or space
+                        const cleaned = value
+                          .split(/[\n, ]+/) // split by newlines, commas, or spaces
+                          .map((num) => num.trim())
+                          .filter((num) => num && /^\+?\d+$/.test(num));
+
+                        setManualRecipientsCount(cleaned.length);
+                      }}
                     />
                   </div>
                 </div>
@@ -533,7 +549,7 @@ const SendSMSPage: React.FC = () => {
                   )}
                 </div>
               </div>
-            <div className="flex items-center justify-between">
+              <div className="flex items-center justify-between">
                 <div>
                   <h3 className="text-sm font-medium text-gray-900">
                     Schedule Message
@@ -616,7 +632,9 @@ const SendSMSPage: React.FC = () => {
                       {formData.scheduleDate && (
                         <div className="absolute inset-y-0 left-10 flex items-center pointer-events-none">
                           <span className="text-black text-sm">
-                            {new Date(formData.scheduleDate).toLocaleDateString()}
+                            {new Date(
+                              formData.scheduleDate
+                            ).toLocaleDateString()}
                           </span>
                         </div>
                       )}
@@ -662,19 +680,19 @@ const SendSMSPage: React.FC = () => {
                       />
                       {!formData.scheduleTime && (
                         <div className="absolute inset-y-0 left-10 flex items-center pointer-events-none">
-                          <span className="text-black text-sm">
-                            --:-- --
-                          </span>
+                          <span className="text-black text-sm">--:-- --</span>
                         </div>
                       )}
                       {formData.scheduleTime && (
                         <div className="absolute inset-y-0 left-10 flex items-center pointer-events-none">
                           <span className="text-black text-sm">
                             {(() => {
-                              const [hours, minutes] = formData.scheduleTime.split(':');
+                              const [hours, minutes] =
+                                formData.scheduleTime.split(":");
                               const hour = parseInt(hours);
-                              const ampm = hour >= 12 ? 'PM' : 'AM';
-                              const displayHour = hour === 0 ? 12 : hour > 12 ? hour - 12 : hour;
+                              const ampm = hour >= 12 ? "PM" : "AM";
+                              const displayHour =
+                                hour === 0 ? 12 : hour > 12 ? hour - 12 : hour;
                               return `${displayHour}:${minutes} ${ampm}`;
                             })()}
                           </span>
@@ -696,7 +714,10 @@ const SendSMSPage: React.FC = () => {
                 <div className="flex justify-between items-center">
                   <span className="text-gray-600">Recipients:</span>
                   <span className="font-semibold text-gray-900">
-                    {totalRecipients.toLocaleString()}
+                    {(activeTab === "manual"
+                      ? manualRecipientsCount
+                      : totalRecipients
+                    ).toLocaleString()}
                   </span>
                 </div>
                 <div className="flex justify-between items-center">

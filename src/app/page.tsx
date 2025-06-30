@@ -11,6 +11,7 @@ import {
   XCircle,
   Clock,
 } from "lucide-react";
+import Link from "next/link";
 
 export default function HomePage() {
   return (
@@ -28,14 +29,14 @@ export default function HomePage() {
             </p>
           </div>
           <div className="flex gap-3 mt-4 lg:mt-0">
-            <button className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg flex items-center gap-2 transition-colors">
+            <Link href={'/send-sms'} className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg flex items-center gap-2 transition-colors">
               <Send className="w-4 h-4" />
               Send SMS
-            </button>
-            <button className="border border-gray-300 hover:bg-gray-50 text-gray-700 px-4 py-2 rounded-lg flex items-center gap-2 transition-colors">
+            </Link>
+            <Link href={'/campaigns/new'} className="border border-gray-300 hover:bg-gray-50 text-gray-700 px-4 py-2 rounded-lg flex items-center gap-2 transition-colors">
               <Plus className="w-4 h-4" />
               New Campaign
-            </button>
+            </Link>
           </div>
         </div>
 
@@ -187,10 +188,10 @@ export default function HomePage() {
               </div>
             </div>
 
-            <button className="w-full mt-6 text-black border rounded-sm bg-white dark:bg-gray-600 hover:bg-gray-100 dark:hover:bg-gray-200 hover:text-gray-900 py-2 flex items-center justify-center gap-2 transition-colors">
+            <Link href={'/campaigns'} className="w-full mt-6 text-black border rounded-sm bg-white dark:bg-gray-600 hover:bg-gray-100 dark:hover:bg-gray-200 hover:text-gray-900 py-2 flex items-center justify-center gap-2 transition-colors">
               <BarChart3 className="w-4 h-4" />
               View All Campaigns
-            </button>
+            </Link>
           </div>
 
           {/* Recent Activity */}
@@ -290,28 +291,28 @@ export default function HomePage() {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <button className="p-6 border border-gray-200 rounded-xl hover:border-blue-300 hover:bg-blue-50 transition-all text-left group">
+            <Link href={'/send-sms'}  className="p-6 border border-gray-200 rounded-xl hover:border-blue-300 hover:bg-blue-50 transition-all text-left group">
               <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mb-4 group-hover:bg-blue-200 transition-colors">
                 <Send className="w-6 h-6 text-blue-600" />
               </div>
               <h3 className="font-semibold text-gray-900 mb-2">Send SMS</h3>
-            </button>
+            </Link>
 
-            <button className="p-6 border border-gray-200 rounded-xl hover:border-green-300 hover:bg-green-50 transition-all text-left group">
+            <Link href={'/campaigns/new'}  className="p-6 border border-gray-200 rounded-xl hover:border-green-300 hover:bg-green-50 transition-all text-left group">
               <div className="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center mb-4 group-hover:bg-green-200 transition-colors">
                 <Plus className="w-6 h-6 text-green-600" />
               </div>
               <h3 className="font-semibold text-gray-900 mb-2">
                 Create Campaign
               </h3>
-            </button>
+            </Link>
 
-            <button className="p-6 border border-gray-200 rounded-xl hover:border-purple-300 hover:bg-purple-50 transition-all text-left group">
+            <Link href={'/reports'}  className="p-6 border border-gray-200 rounded-xl hover:border-purple-300 hover:bg-purple-50 transition-all text-left group">
               <div className="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center mb-4 group-hover:bg-purple-200 transition-colors">
                 <BarChart3 className="w-6 h-6 text-purple-600" />
               </div>
               <h3 className="font-semibold text-gray-900 mb-2">View Reports</h3>
-            </button>
+            </Link>
           </div>
         </div>
       </div>
