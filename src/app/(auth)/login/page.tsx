@@ -2,7 +2,8 @@
 
 import { useState } from 'react';
 import { Eye, EyeOff, Mail, Lock } from 'lucide-react';
-
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 interface FormData {
   email: string;
   password: string;
@@ -14,6 +15,7 @@ interface FormErrors {
 }
 
 export default function LoginPage() {
+  const router = useRouter();
   const [formData, setFormData] = useState<FormData>({
     email: '',
     password: ''
@@ -66,8 +68,7 @@ export default function LoginPage() {
     // Simulate API call
     try {
       await new Promise(resolve => setTimeout(resolve, 1500));
-      console.log('Login attempt:', formData);
-      alert('Login successful! (This is a demo)');
+        router.push('/dashboard')
     } catch (error) {
       console.error('Login failed:', error);
     } finally {
@@ -189,12 +190,12 @@ export default function LoginPage() {
           <div className="mt-6 text-center">
             <p className="text-sm text-gray-600">
               Don&apos;t have an account?{' '}
-              <a 
-                href="#" 
+              <Link
+                href="/signup" 
                 className="text-blue-600 hover:text-blue-700 font-medium transition-colors"
               >
                 Sign up
-              </a>
+              </Link>
             </p>
           </div>
         </div>
