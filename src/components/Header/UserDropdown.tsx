@@ -26,13 +26,13 @@ function toggleDropdown(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
           <Image
             width={44}
             height={44}
-            src="/images/user/wajid.png"
+            src="/images/default.png"
             alt="User"
           />
         </span>
 
       <div className="flex flex-col justify-start items-baseline">
-          <span className="block mr-1 font-sm font-bold text-theme-sm">Wajid Ali</span>
+          <span className="block mr-1 font-sm font-bold text-theme-sm">SoftSMS</span>
         <span className="block mr-1 text-sm text-gray-600">admin</span>
       </div>
 

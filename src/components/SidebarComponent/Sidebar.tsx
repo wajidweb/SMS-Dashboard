@@ -181,7 +181,7 @@ const Sidebar: React.FC = () => {
                 <Image
                   width={44}
                   height={44}
-                  src="/images/user/wajid.png"
+                  src="/images/default.png"
                   alt="User"
                 />
               </span>
@@ -189,7 +189,7 @@ const Sidebar: React.FC = () => {
               {(isExpanded || isHovered || isMobileOpen) && (
                 <div className="flex flex-col justify-start items-start">
                   <span className="block font-bold text-sm text-gray-900 dark:text-white">
-                    Wajid Ali
+                    SoftSMS
                   </span>
                   <span className="block text-sm text-gray-600 dark:text-gray-400">
                     admin
