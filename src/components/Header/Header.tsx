@@ -9,10 +9,10 @@ const Header: React.FC = () => {
   const [isApplicationMenuOpen, setApplicationMenuOpen] = useState(false);
 
   const { isMobileOpen, toggleSidebar, toggleMobileSidebar } = useSidebar();
-  console.log(isMobileOpen)
+  console.log(isMobileOpen);
   const handleToggle = () => {
     if (window.innerWidth >= 1024) {
-      toggleSidebar(); 
+      toggleSidebar();
     } else {
       toggleMobileSidebar();
     }
@@ -21,7 +21,7 @@ const Header: React.FC = () => {
   const toggleApplicationMenu = () => {
     setApplicationMenuOpen(!isApplicationMenuOpen);
   };
-  
+
   const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
@@ -38,6 +38,7 @@ const Header: React.FC = () => {
       document.removeEventListener("keydown", handleKeyDown);
     };
   }, []);
+  const balance = 1234.567891; // this will be formatted to 1234.5679
 
   return (
     <header className="sticky top-0 flex w-full bg-white border-gray-200 z-99999 dark:border-gray-800 dark:bg-gray-900 lg:border-b">
@@ -67,7 +68,7 @@ const Header: React.FC = () => {
           </button>
 
           <Link href="/" className="lg:hidden font-bold">
-           SMS Dashboard
+            SMS Dashboard
           </Link>
 
           <button
@@ -120,13 +121,16 @@ const Header: React.FC = () => {
             </form>
           </div>
         </div>
-        
+
         <div
           className={`${
             isApplicationMenuOpen ? "flex" : "hidden"
           } items-center justify-between w-full gap-4 px-5 py-4 lg:flex shadow-theme-md lg:justify-end lg:px-0 lg:shadow-none`}
         >
           <div className="flex items-center gap-2 2xsm:gap-3">
+            <div className="bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200 px-3 py-1 rounded-md text-sm font-semibold flex items-center">
+              Balance: {balance.toFixed(4)} 
+            </div>
             <ThemeToggleButton />
             <button className="bg-white hover:bg-blue-50 inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&amp;_svg]:pointer-events-none [&amp;_svg]:size-4 [&amp;_svg]:shrink-0 hover:bg-accent hover:text-accent-foreground h-10 w-10 relative">
               <svg

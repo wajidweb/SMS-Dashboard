@@ -57,7 +57,7 @@ function toggleDropdown(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
               onItemClick={closeDropdown}
               tag="a"
               href="/profile"
-              className="flex items-center gap-3 px-1 py-1 font-medium text-black rounded-lg group text-theme-sm hover:bg-gray-100 hover:text-white dark:text-white dark:hover:bg-white/5 dark:hover:text-gray-300"
+              className="flex items-center gap-3 px-1 py-1 font-medium text-black rounded-lg group text-theme-sm hover:bg-gray-100 hover:text-black dark:text-white dark:hover:bg-white/5 dark:hover:text-gray-300"
             >
               <svg
                 className="fill-gray-500 group-hover:fill-gray-700 dark:fill-white dark:group-hover:fill-white"
