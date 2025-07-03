@@ -59,6 +59,7 @@ export default function ForgotPassword() {
       setStep('otp');
     } catch (error) {
       setErrors({ email: 'Something went wrong. Please try again.' });
+      console.log(error);
     } finally {
       setIsLoading(false);
     }
@@ -115,6 +116,7 @@ export default function ForgotPassword() {
       setStep('success');
     } catch (error) {
       setErrors({ otp: 'Invalid OTP. Please try again.' });
+      console.log(error)
     } finally {
       setIsLoading(false);
     }
@@ -135,6 +137,8 @@ export default function ForgotPassword() {
       // Focus first OTP input
       otpRefs.current[0]?.focus();
     } catch (error) {
+            console.log(error)
+
       setErrors({ otp: 'Failed to resend OTP. Please try again.' });
     } finally {
       setIsLoading(false);
@@ -203,7 +207,7 @@ export default function ForgotPassword() {
                 Enter OTP
               </h1>
               <p className="text-gray-600">
-                We've sent a 6-digit code to <strong>{email}</strong>
+                We have sent a 6-digit code to <strong>{email}</strong>
               </p>
             </div>
 
@@ -295,7 +299,7 @@ export default function ForgotPassword() {
               Forgot password?
             </h1>
             <p className="text-gray-600">
-              Enter your email address and we'll send you an OTP to reset your password
+              Enter your email address and we will send you an OTP to reset your password
             </p>
           </div>
 
